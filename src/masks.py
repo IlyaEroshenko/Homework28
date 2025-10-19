@@ -14,7 +14,7 @@ def get_mask_card_number(card_number: str) -> str:
 
 def get_mask_account(account_number: str) -> str:
     """Функция принимает на вход номер счета и возвращает его маску."""
-    return f"**{account_number[-4:]}"
+    return f"{'Счёт '}**{account_number[-4:]}"
 
 
 def get_date(date_string: str, date_format: str = "%Y-%m-%dT%H:%M:%S.%f") -> str:
@@ -31,7 +31,7 @@ def get_date(date_string: str, date_format: str = "%Y-%m-%dT%H:%M:%S.%f") -> str
 print(get_mask_card_number("Visa Platinum 8990922113665229"))
 
 
-print(get_mask_account("73654108430135874305"))
+print(get_mask_account("Счет 73654108430135874305"))
 
 
 print(get_date("2024-03-11T02:26:18.671407"))
