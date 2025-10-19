@@ -14,13 +14,13 @@ def get_mask_account(account_number: str) -> str:
     return f"**{account_number[-4:]}"
 
 
-def get_date(date_string: str, date_format="%Y-%m-%dT%H:%M:%S.%f") -> str:
+def get_date(date_string: str, date_format: str="%Y-%m-%dT%H:%M:%S.%f") -> str:
     """Получаем и выводим дату в нужном нам формате"""
     try:
-        return datetime.strptime(date_string, date_format)
+        return datetime.strptime(date_string, date_format).strftime("%Y-%m-%dT%H:%M:%S.%f")
     except ValueError:
         print(f"Ошибка: Неверный формат даты '{date_string}' для формата '{date_format}'")
-        return None
+        return "Ошибка"
 
 
         # print() используется в данном коде только для вызова функции, при дальнейшей работе он будет удалён.
