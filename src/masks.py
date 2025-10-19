@@ -20,7 +20,7 @@ def get_mask_account(account_number: str) -> str:
 def get_date(date_string: str, date_format: str = "%Y-%m-%dT%H:%M:%S.%f") -> str:
     """Получаем и выводим дату в нужном нам формате"""
     try:
-        return datetime.strptime(date_string, date_format).strftime("%d-%m-%Y T %H:%M:%S.%f")
+        return datetime.strptime(date_string, date_format).strftime("%d-%m-%Y")
     except ValueError:
         print(f"Ошибка: Неверный формат даты '{date_string}' для формата '{date_format}'")
         return "Ошибка"
