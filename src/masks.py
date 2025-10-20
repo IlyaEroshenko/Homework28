@@ -1,6 +1,3 @@
-
-
-
 def get_mask_card_number(card_number: str) -> str:
     """Функция принимает на вход номер и название карты и возвращаем маску номера."""
     parts = card_number.split()  # Делим входящюю информацию на части
@@ -17,10 +14,7 @@ def get_mask_account(account_number: str) -> str:
     return f"{'Счёт '}**{account_number[-4:]}"
 
 
-        # print() используется в данном коде только для вызова функции, при дальнейшей работе он будет удалён.
-
-
+# print() используется в данном коде только для вызова функции, при дальнейшей работе он будет удалён.
 print(get_mask_card_number("Visa Platinum 8990922113665229"))
 
 print(get_mask_account("Счет 73654108430135874305"))
-
