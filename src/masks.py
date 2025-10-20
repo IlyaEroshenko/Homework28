@@ -22,8 +22,5 @@ def get_mask_account(account_number: str) -> str:
 
 print(get_mask_card_number("Visa Platinum 8990922113665229"))
 
-
 print(get_mask_account("Счет 73654108430135874305"))
-
-
 
