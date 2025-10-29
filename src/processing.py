@@ -34,7 +34,8 @@ print(result_canceled)
 
 from datetime import datetime
 
-def sort_by_date(list_of_dicts: list, descending: str = True) -> list:
+
+def sort_by_date(list_of_dicts: list[dict], descending: bool = True) -> list[dict]:
     """
     Пишем функцию, которая принимает список словарей и необязательный параметр,
     задающий порядок сортировки (по умолчанию — убывание).
