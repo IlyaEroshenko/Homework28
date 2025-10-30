@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 def filter_by_state(data: list, state: str = "EXECUTED") -> list:
     """
     Фильтрует список словарей по значению ключа "state".
@@ -7,8 +10,9 @@ def filter_by_state(data: list, state: str = "EXECUTED") -> list:
         state (str, optional): Статус операции, по которому фильтруются данные. По умолчанию "EXECUTED".
 
     Returns:
-        list[dict]: Новый список, содержащий только те словари, у которых ключ "state" соответствует указанному значению.
+        list[dict]: Новый список, содержащий только те словари, у которых ключ "state" соответствует значению.
     """
+
     # Сщздаём новый список для отфильтрованых элементов
     filtered_data = []
 
@@ -37,11 +41,8 @@ result_canceled = filter_by_state(transactions, "CANCELED")
 print(result_canceled)
 
 
-from datetime import datetime
-
-
-def sort_by_date(list_of_dicts: list[dict], descending: bool = True) -> list[dict]:
-    """"
+def sort_by_date(transactions_list: list[dict], descending: bool = True) -> list[dict]:
+    """ "
     Сортирует список словарей по ключу "date".
 
     Args:
@@ -53,7 +54,7 @@ def sort_by_date(list_of_dicts: list[dict], descending: bool = True) -> list[dic
     """
 
     # преобразуем строку даты в объект datetime
-    return sorted(list_of_dicts, key=lambda x: datetime.fromisoformat(x["date"]), reverse=descending)
+    return sorted(transactions_list, key=lambda x: datetime.fromisoformat(x["date"]), reverse=descending)
 
 
 # Пример использования:
