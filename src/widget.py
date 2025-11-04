@@ -9,7 +9,8 @@ def mask_account_card(account_info: str) -> str:
     if account_info.startswith("Счет"):  # Отдельно для счёта
         return f"Счет **{account_number[-4:]}"
     else:
-        return f"{account_type} {account_number[:4]} {account_number[4:6]}** **** {account_number[12:]}"
+        masked_number = f"{account_number[:4]} {account_number[4:6]}** **** {account_number[12:]}"
+        return f"{account_type} {masked_number}"
 
 
 def get_date(date_string: str, date_format: str = "%Y-%m-%dT%H:%M:%S.%f") -> str:
