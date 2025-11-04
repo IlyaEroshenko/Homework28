@@ -10,8 +10,6 @@ def get_mask_card_number(card_number: str) -> str:
     parts = card_number.split()  # Делим входящюю информацию на части по пробелам
     name_card = " ".join(parts[:-1])
     number_card = parts[-1]
-
-
     if len(number_card) == 16:  # Проверяем количество цифр в номере
         return f"{name_card} {number_card[:4]} {number_card[4:6]}** **** {number_card[12:]}"
     elif len(number_card) < 2:
