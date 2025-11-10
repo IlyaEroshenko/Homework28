@@ -56,6 +56,6 @@ def card_number_generator(start: int, end: int) -> int:
         formatted_number = f'{number:016}'
         yield " ".join(formatted_number[n:n+4] for n in range(0, 16, 4))
 
-card_gen = card_number_generator(1, 3)
+card_gen = card_number_generator(1, 5)
 for card in card_gen:
     print(card)
