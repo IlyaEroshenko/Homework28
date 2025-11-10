@@ -44,3 +44,18 @@ def transaction_descriptions(transactions):
 descriptions = transaction_descriptions(transactions)
 for description in descriptions:
     print(description)
+
+
+def card_number_generator(start: int, end: int) -> int:
+    if not (0 < start <= 9999999999999999 and 0 < end <= 9999999999999999):
+        raise ValueError
+    if start > end:
+        raise ValueError
+
+    for number in range(start, end +1):
+        formatted_number = f'{number:016}'
+        yield " ".join(formatted_number[n:n+4] for n in range(0, 16, 4))
+
+card_gen = card_number_generator(1, 3)
+for card in card_gen:
+    print(card)
