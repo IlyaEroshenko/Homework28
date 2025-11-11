@@ -1,7 +1,6 @@
-#from transactions_data import transactions
+from typing import List, Dict, Iterator, Generator
 
-
-def filter_by_currency(transactions, currency):
+def filter_by_currency(transactions: List[Dict], currency: str) -> Iterator[Dict]:
     """
         Фильтрует список транзакций и возвращает транзакции, соответствующие заданной валюте.
         Использует генератор для эффективной обработки данных.
@@ -13,58 +12,17 @@ def filter_by_currency(transactions, currency):
             Словари, представляющие транзакции, у которых валюта (currency) совпадает с заданной.
         """
     for transaction in transactions:
-        try:
-            transaction_currency = transaction["operationAmount"]["currency"]["code"]  # Получаем код валюты из вложенного словаря.
+        try:  # Получаем код валюты из вложенного словаря.
+            transaction_currency = transaction["operationAmount"]["currency"]["code"]
             if transaction_currency == currency:
                 yield transaction  # Возвращаем транзакцию, если валюта соответствует.
         except (KeyError, TypeError):
             continue  # Если структура словаря не соответствует ожидаемой, игнорируем транзакцию.
 
-transactions = [{
-          "id": 939719570,
-          "state": "EXECUTED",
-          "date": "2018-06-30T02:08:58.425572",
-          "operationAmount": {
-              "amount": "9824.07",
-              "currency": {
-                  "name": "EUR",
-                  "code": "EUR"
-              }
-          },
-          "description": "Перевод организации",
-          "from": "Счет 75106830613657916952",
-          "to": "Счет 11776614605963066702"
-      }, {
-          "id": 939719580,
-          "state": "EXECUTED",
-          "date": "2019-06-30T02:08:58.425572",
-          "operationAmount": {
-              "amount": "9829.04",
-              "currency": {
-                  "name": "RUB",
-                  "code": "RUB"
-              }
-          },
-          "description": "Перевод организации",
-          "from": "Счет 75106830613657916952",
-          "to": "Счет 11776614605963066702"
-      },
-      {
-              "id": 142264268,
-              "state": "EXECUTED",
-              "date": "2019-04-04T23:20:05.206878",
-              "operationAmount": {
-                  "amount": "79114.93",
-                  "currency": {
-                      "name": "USD",
-                      "code": "USD"
-                  }
-              },
-              "description": "Перевод со счета на счет",
-              "from": "Счет 19708645243227258542",
-              "to": "Счет 75651667383060284188"
-       },
-    {
+
+transactions = (
+    [
+        {
             "id": 939719570,
             "state": "EXECUTED",
             "date": "2018-06-30T02:08:58.425572",
@@ -140,6 +98,7 @@ transactions = [{
             "to": "Счет 14211924144426031657"
         }
     ]
+)
 
 
 rub_transactions = filter_by_currency(transactions, "RUB")
@@ -147,9 +106,8 @@ for transaction in rub_transactions:
     print(transaction)
 
 
-def transaction_descriptions(transactions):
-    """
-    Генератор, извлекающий описание каждой транзакции из списка словарей.
+def transaction_descriptions(transactions: List[Dict]) -> Generator[str, None, None]:
+    """Генератор, извлекающий описание каждой транзакции из списка словарей.
     Args:
         transactions: Список словарей, где каждый словарь представляет транзакцию
                       и содержит ключ 'description' с описанием операции.
@@ -160,15 +118,16 @@ def transaction_descriptions(transactions):
         try:
             description = transaction['description']  # Пытаемся получить описание
             yield description  # Возвращаем описание текушей транзакции.
-        except (KeyError, TypeError): # Обрабатываем случаи, если ключа 'description' нет в словаре
+        except (KeyError, TypeError):  # Обрабатываем случаи, если ключа 'description' нет в словаре
             continue
+
 
 descriptions = transaction_descriptions(transactions)
 for description in descriptions:
     print(description)
 
 
-def card_number_generator(start: int, end: int) -> int:
+def card_number_generator(start: int, end: int) -> Generator[str, None, None]:
     """
        Генерирует номера банковских карт в формате XXXX XXXX XXXX XXXX в заданном диапазоне.
        Args:
@@ -178,13 +137,14 @@ def card_number_generator(start: int, end: int) -> int:
            Строка, представляющая номер карты в формате XXXX XXXX XXXX XXXX.
        """
     if not (0 < start <= 9999999999999999 and 0 < end <= 9999999999999999):
-        raise ValueError("Недопустимый диапазон: 1..9999999999999999")  #  Начальное и конечное значения должны быть в диапазоне
+        raise ValueError("Недопустимый диапазон: 1..9999999999999999")
     if start > end:
-        raise ValueError("Недопустимый диапазон: 1..9999999999999999")  # Начальное значение не может быть больше конечного.
+        # Начальное значение не может быть больше конечного.
+        raise ValueError("Недопустимый диапазон: 1..9999999999999999")
 
-    for number in range(start, end +1):
-        formatted_number = f'{number:016}' # обеспечиваем 16-значное представление числа с ведущими нулями.
-        yield " ".join(formatted_number[n:n+4] for n in range(0, 16, 4))
+    for number in range(start, end + 1):
+        formatted_number = f'{number:016}'  # обеспечиваем 16-значное представление числа с ведущими нулями.
+        yield " ".join(formatted_number[n: n + 4] for n in range(0, 16, 4))
 
 
 card_gen = card_number_generator(1, 5)

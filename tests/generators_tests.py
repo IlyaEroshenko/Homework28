@@ -11,6 +11,7 @@ def sample_transactions():  # Fixture для создания тестовых �
         {"operationAmount": {"currency": {"code": "RUB"}}}
     ]
 
+
 def test_filter_usd(sample_transactions):  # Тест для фильтрации транзакций в RUB.
     rub_transactions = list(filter_by_currency(sample_transactions, "RUB"))
     assert len(rub_transactions) == 2
@@ -30,10 +31,10 @@ def test_key_error_handling():  # Тест обработки KeyError.
 
 
 def test_descriptions_present():
-   """Проверяем наличие описаний в списке."""
-   transactions = [{'description': 'Зарплата'}, {'description': 'Покупка'}]
-   descriptions = list(transaction_descriptions(transactions))
-   assert descriptions == ['Зарплата', 'Покупка']
+    """Проверяем наличие описаний в списке."""
+    transactions = [{'description': 'Зарплата'}, {'description': 'Покупка'}]
+    descriptions = list(transaction_descriptions(transactions))
+    assert descriptions == ['Зарплата', 'Покупка']
 
 
 #  Тестируйте работу функции с различным количеством входных транзакций, включая пустой список.
@@ -43,9 +44,10 @@ def test_empty_list():
     descriptions = list(transaction_descriptions(transactions))
     assert descriptions == []
 
+
 def test_non_dict_transaction():
     """Проверяем пропуск не-словаря в списке."""
-    transactions = [123, {'description': 'Покупка'}] # type: ignore
+    transactions = [123, {'description': 'Покупка'}]  # type: ignore
     descriptions = list(transaction_descriptions(transactions))
     assert descriptions == ['Покупка']
 
@@ -61,9 +63,8 @@ def test_valid_range():
         next(generator)
 
 
-def test_maximum_value(): #  Тестовая функция с максимальным значением.
-   generator = card_number_generator(9999999999999999, 9999999999999999)
-   assert next(generator) == "9999 9999 9999 9999"
-   with pytest.raises(StopIteration):
+def test_maximum_value():  # Тестовая функция с максимальным значением.
+    generator = card_number_generator(9999999999999999, 9999999999999999)
+    assert next(generator) == "9999 9999 9999 9999"
+    with pytest.raises(StopIteration):
         next(generator)
-
