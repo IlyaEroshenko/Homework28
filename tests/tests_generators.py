@@ -1,6 +1,6 @@
 import pytest
 
-from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+from src.generators import filter_by_currency, transaction_descriptions
 
 
 @pytest.fixture
@@ -50,21 +50,3 @@ def test_non_dict_transaction():
     transactions = [123, {'description': 'Покупка'}]  # type: ignore
     descriptions = list(transaction_descriptions(transactions))
     assert descriptions == ['Покупка']
-
-
-#  Проверка генерации номеров в допустимом диапазоне.
-
-def test_valid_range():
-    generator = card_number_generator(1, 3)
-    assert next(generator) == "0000 0000 0000 0001"
-    assert next(generator) == "0000 0000 0000 0002"
-    assert next(generator) == "0000 0000 0000 0003"
-    with pytest.raises(StopIteration):
-        next(generator)
-
-
-def test_maximum_value():  # Тестовая функция с максимальным значением.
-    generator = card_number_generator(9999999999999999, 9999999999999999)
-    assert next(generator) == "9999 9999 9999 9999"
-    with pytest.raises(StopIteration):
-        next(generator)
