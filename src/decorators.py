@@ -35,8 +35,8 @@ def log(filename=None):
                 raise e
             finally:
                 logger.removeHandler(handler)
-            return wrapper
-        return decorator_log
+        return wrapper
+    return decorator_log
 
   # Пример использования
 if __name__ == '__main__':
