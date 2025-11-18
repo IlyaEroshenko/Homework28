@@ -2,7 +2,7 @@ import functools
 import logging
 
 
-def log(filename=None):
+def log(filename: object = None) -> object:
     """
         Декоратор для логирования начала и конца выполнения функции,
         а также ее результатов или возникших ошибок.
