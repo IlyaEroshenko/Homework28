@@ -1,8 +1,22 @@
 
+
+import os
+
 import pytest
+
 from src.decorators import log
-import logging
-from io import StringIO
+
+
+# Фикстура для очистки лог-файла перед и после каждого теста
+@pytest.fixture
+def log_file_cleaner():
+    log_file = "test.log"
+    if os.path.exists(log_file):
+        os.remove(log_file)
+    yield log_file  # Полезно для получения имени файла в тестах
+    if os.path.exists(log_file):
+        os.remove(log_file)
+
 
 def test_log_to_console(capsys):
     @log()
@@ -26,12 +40,14 @@ def test_log_to_file(tmp_path):
         assert "another_function" in log_contents
         assert "7" in log_contents
 
-def test_log_exception(capsys):
+
+def test_log_exception(capfd):
     @log()
-    def failing_function(x):
-        raise ValueError("Что-то пошло не так")
-    with pytest.raises(ValueError, match="Что-то пошло не так"):
-        failing_function(10)
-        captured = capsys.readouterr()
-        assert "failing_function" in captured.out
-        assert "ValueError" in captured.out
+    def divide(x, y):
+        return x / y
+
+    with pytest.raises(ZeroDivisionError):
+        divide(10, 0)
+    captured = capfd.readouterr()
+    assert "Ошибка в функции divide" in captured.err
+    assert "Тип ошибки: ZeroDivisionError" in captured.err
