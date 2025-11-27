@@ -16,8 +16,6 @@ def get_exchange_rate(currency):
         print(f"Ошибка при получении курса валюты: {response.status_code}")
         return None
 
-# main.py
-from external_api import get_exchange_rate
 
 def calculate_rub_amount(transaction):
     """

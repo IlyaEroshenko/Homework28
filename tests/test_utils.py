@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, mock_open
 import json
 import os
-from src.transactions import load_transactions_from_json
+from src.utils import load_transactions_from_json
 
 class TestLoadTransactionsFromJson(unittest.TestCase):
 
