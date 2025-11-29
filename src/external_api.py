@@ -29,20 +29,36 @@ def calculate_rub_amount(transaction):
     """
     if not isinstance(transaction, dict):
         print("Ошибка: transaction должна быть словарём")
-        return  None
-    if "amount" not in transaction or "currency" not in transaction:
-        print("Ошибка в transaction отсутствуют ключи 'amount' или 'currency'")
+        return
+    if 'operationAmount' in transaction:
+        operation = transaction['operationAmount']
+        if 'amount' in operation and 'currency' in operation:
+            try:
+                amount = float(operation['amount'])  # Преобразуем amount в float
+            except ValueError:
+                print("Некорректный формат суммы")
+                return  None
+            currency = operation['currency']['code']
+        else:
+            print("Ошибка: Отсутствуют ключи 'amount' или 'currency' в operationAmount")
+            return None
+    elif 'amount' in transaction and 'currency' in transaction:
+        try:
+            amount = float(transaction['amount'])  # Преобразуем amount в float
+        except ValueError:
+            print("Некорректный формат суммы")
+            return None
+        currency = transaction['currency']
+    else:
+        print("Ошибка: Отсутствует 'operationAmount' или ключи 'amount' и 'currency' в transaction")
         return None
-
-    amount = transaction["amount"]
-    currency = transaction["currency"]
 
     if currency == "RUB":
         return float(amount)
     elif currency in ("USD", "EUR"):
         rate = get_exchange_rate(currency)
         if rate:
-            return float(amount * rate)
+            return round(float(amount) * float(rate), 2)
         else:
             return None  # Возвращаем None, если не удалось получить курс
     else:
@@ -51,9 +67,9 @@ def calculate_rub_amount(transaction):
 
 
 # Пример использования
-transaction1 = {"amount": 100, "currency": "USD"}
-transaction2 = {"amount": 5000, "currency": "RUB"}
-transaction3 = {"amount": 200} # Отсутствует ключ currency
+transaction1 = {"operationAmount": {"amount": 100, "currency": {"code": "USD"}}}
+transaction2 = {"operationAmount": {"amount": 5000, "currency": {"code": "RUB"}}}
+transaction3 = {"operationAmount": {"amount": 200, "currency": {"code": "CNY"}}}  # Пример с неподдерживаемой валютой} # Отсутствует ключ currency
 
 rub_amount1 = calculate_rub_amount(transaction1)
 rub_amount2 = calculate_rub_amount(transaction2)
