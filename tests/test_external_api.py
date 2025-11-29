@@ -4,6 +4,7 @@ import requests
 from src.external_api import get_exchange_rate
 from src.external_api import calculate_rub_amount
 
+
 @pytest.fixture
 def sample_transaction_usd():
   return {'amount': 100, 'currency': 'USD'}
@@ -17,6 +18,10 @@ def sample_transaction_rub():
 @pytest.fixture
 def sample_transaction_gbp():
   return {'amount': 100, 'currency': 'GBP'}
+
+@pytest.fixture
+def sample_transaction_invalid():
+    return {'amount': 100}  # Отсутствует ключ 'currency'
 
 
 @patch("src.external_api.get_exchange_rate")  # сумма в долларах США
@@ -45,3 +50,7 @@ def test_calculate_rub_amount_api_failure(mock_get_exchange_rate, sample_transac
   result = calculate_rub_amount(sample_transaction_usd)
   assert result is None
 
+
+def test_calculate_rub_amount_invalid_format(sample_transaction_invalid):
+    result = calculate_rub_amount(sample_transaction_invalid)
+    assert result is None
