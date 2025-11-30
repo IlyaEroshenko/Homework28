@@ -6,7 +6,7 @@ print("Текущая рабочая директория:", os.getcwd())
 
 logger = logging.getLogger('masks')
 logger.setLevel(logging.DEBUG)
-file_handler = logging.FileHandler(r'C:\Users\ilyer\OneDrive\Homework\logs\masks.log', 'w')
+file_handler = logging.FileHandler(r'C:\Users\ilyer\OneDrive\Homework\logs\masks.log', 'w', encoding='utf-8')
 file_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
