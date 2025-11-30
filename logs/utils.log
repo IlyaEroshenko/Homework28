@@ -1,0 +1,3 @@
+2025-11-30 21:52:06,862 - utils - INFO - Начало загрузки данных из файла: data\operations.json
+2025-11-30 21:52:06,863 - utils - WARNING - Файл data\operations.json не найден.
+2025-11-30 21:52:06,863 - utils - INFO - Загрузка данных из файла data\operations.json завершена.
