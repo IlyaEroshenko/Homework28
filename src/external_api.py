@@ -37,7 +37,7 @@ def calculate_rub_amount(transaction):
                 amount = float(operation['amount'])  # Преобразуем amount в float
             except ValueError:
                 print("Некорректный формат суммы")
-                return  None
+                return None
             currency = operation['currency']['code']
         else:
             print("Ошибка: Отсутствуют ключи 'amount' или 'currency' в operationAmount")
@@ -69,7 +69,7 @@ def calculate_rub_amount(transaction):
 # Пример использования
 transaction1 = {"operationAmount": {"amount": 100, "currency": {"code": "USD"}}}
 transaction2 = {"operationAmount": {"amount": 5000, "currency": {"code": "RUB"}}}
-transaction3 = {"operationAmount": {"amount": 200, "currency": {"code": "CNY"}}}  # Пример с неподдерживаемой валютой} # Отсутствует ключ currency
+transaction3 = {"operationAmount": {"amount": 200, "currency": {"code": "CNY"}}}
 
 rub_amount1 = calculate_rub_amount(transaction1)
 rub_amount2 = calculate_rub_amount(transaction2)

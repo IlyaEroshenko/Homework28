@@ -1,6 +1,5 @@
 import logging
 import os
-from datetime import datetime
 
 print("Текущая рабочая директория:", os.getcwd())
 
@@ -10,6 +9,7 @@ file_handler = logging.FileHandler(r'C:\Users\ilyer\OneDrive\Homework\logs\masks
 file_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
+
 
 def get_mask_card_number(card_number: str) -> str:
     """Функция принимает на вход номер и название карты и возвращаем маску номера."""
