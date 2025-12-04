@@ -30,25 +30,25 @@ def calculate_rub_amount(transaction):
     if not isinstance(transaction, dict):
         print("Ошибка: transaction должна быть словарём")
         return
-    if 'operationAmount' in transaction:
-        operation = transaction['operationAmount']
-        if 'amount' in operation and 'currency' in operation:
+    if "operationAmount" in transaction:
+        operation = transaction["operationAmount"]
+        if "amount" in operation and "currency" in operation:
             try:
-                amount = float(operation['amount'])  # Преобразуем amount в float
+                amount = float(operation["amount"])  # Преобразуем amount в float
             except ValueError:
                 print("Некорректный формат суммы")
                 return None
-            currency = operation['currency']['code']
+            currency = operation["currency"]["code"]
         else:
             print("Ошибка: Отсутствуют ключи 'amount' или 'currency' в operationAmount")
             return None
-    elif 'amount' in transaction and 'currency' in transaction:
+    elif "amount" in transaction and "currency" in transaction:
         try:
-            amount = float(transaction['amount'])  # Преобразуем amount в float
+            amount = float(transaction["amount"])  # Преобразуем amount в float
         except ValueError:
             print("Некорректный формат суммы")
             return None
-        currency = transaction['currency']
+        currency = transaction["currency"]
     else:
         print("Ошибка: Отсутствует 'operationAmount' или ключи 'amount' и 'currency' в transaction")
         return None
