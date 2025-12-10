@@ -39,7 +39,9 @@ def main():
 
     ruble_only = input("Выводить только рублевые транзакции? Да/Нет\n").lower() == "да"
     filter_by_description = input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет\n").lower() == "да"
-
+      # Запрашиваем строку для фильтрации, если выбрана фильтрация по описанию
+    if filter_by_description:
+        search_term = input("Введите строку для поиска в описаниях транзакций: ").lower()
 
     filtered_transactions = [
         {"date":"08.12.2019", "description":"Открытие вклада", "account":"**4321", "amount":"40542 руб.", "currency":"RUB", "status":"EXECUTED"},
@@ -54,6 +56,16 @@ def main():
 
     if ruble_only:
         filtered_transactions = [t for t in filtered_transactions if t["currency"] == "RUB"]
+      # Сортируем по фразе
+    if filter_by_description:
+        filtered_transactions = [t for t in filtered_transactions if search_term in t["description"].lower()]
+
+      # Сортировка по дате
+    if sort_by_date:
+          # Определяем порядок сортировки
+        reverse = sort_order == "убыванию"
+        filtered_transactions = sorted(filtered_transactions,
+        key=lambda x: datetime.strptime(x["date"], "%d.%m.%Y"), reverse=reverse)  # Указываем порядок сор-ки
 
     if not filtered_transactions:
         print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
