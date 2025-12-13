@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from generators import filter_by_currency
 
 def main():
     print("Привет! Добро пожаловать в программу работы с банковскими транзакциями.")

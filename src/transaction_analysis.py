@@ -1,5 +1,5 @@
-from typing import Dict, List
-
+from typing import List, Dict
+from collections import Counter
 
 def categories_banc_operations(operations: List[Dict], categories: List[str]) -> Dict[str, int]:
     """
@@ -14,15 +14,18 @@ def categories_banc_operations(operations: List[Dict], categories: List[str]) ->
         Словарь, где ключи - названия категорий, а значения - количество операций,
         относящихся к этой категории.
     """
-    # Словаpь накаплевания статистики
-    category_count: Dict[str, int] = {category: 0 for category in categories}
+    # Инициализируем Counter для подсчета категорий.
+    category_counts = Counter()
 
+    # Проходим по каждой операции.
     for operation in operations:
-        # Получаем описание(или пустую строку)
-        description: str = operation.get("description", "")
+        # Получаем описание операции (если есть).
+        description = operation.get("description", "")
 
-        # проходим по всем категориям
+        # Проверяем, соответствует ли описание какой-либо категории.
         for category in categories:
-            if category in description:  # проверка наличия подстроки категории в описании
-                category_count[category] += 1  # добавляем категорию
-    return category_count
+            if category in description:
+                category_counts[category] += 1
+
+    # Counter можно преобразовать обратно в обычный словарь, если требуется.
+    return dict(category_counts)
