@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from src.open_file import read_financial_data_csv, read_financial_data_excel
 from src.process_banc import filter_bank_transaction
@@ -8,7 +9,7 @@ from src.utils import load_transactions_from_json
 base_dir = os.path.dirname(__file__)
 
 
-def main():
+def main(filtered_transactions=None):
     print("Привет! Добро пожаловать в программу работы с банковскими транзакциями.")
     print("Выберите необходимый пункт меню:")
     print("1. Получить информацию о транзакциях из JSON-файла")
@@ -73,8 +74,17 @@ def main():
     for transaction in transaction_data:
         print(
             f'{transaction["date"]} {transaction["description"]}'
-            f'\nСчет {transaction["account"]}\nСумма: {transaction["amount"]} {transaction["currency"]}\n'
+            f'\nСчет {transaction["from"] if "from" in transaction else transaction["to"]}\n'
         )
+
+    for transaction in transaction_data:
+        # Здесь ты уже применил все нужные фильтры и сортировки
+        formatted_date = datetime.fromisoformat(transaction['date']).strftime("%d.%m.%Y")
+        formatted_output = (
+            f"{formatted_date} {transaction['description']}\n"
+            f"Счет {transaction['from']} -> Счет {transaction['to']}\n"
+        )
+        print(formatted_output)
 
 
 if __name__ == "__main__":
