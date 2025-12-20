@@ -46,12 +46,3 @@ def log(filename: object = None) -> object:
         return wrapper
 
     return decorator_log
-
-
-if __name__ == "__main__":  # Пример использования
-
-    def my_function(x, y, c):
-        return x + y * c
-
-    sum_ = my_function(1, 2, 7.12)
-    print(sum_)

@@ -1,35 +1,35 @@
-import unittest
+import pytest
 from unittest.mock import patch
-import io
-from datetime import datetime
-from contextlib import redirect_stdout
-from src.main import main  # Замените your_module на имя файла, где main находится
+from io import StringIO
+import json
 
-class TestMain(unittest.TestCase):
+# Определите фикстуру с моковыми данными транзакций
+@pytest.fixture
+def mock_transactions():
+    return [
+        {"date": "2023-01-01", "description": "Зарплата", "account": "1234", "amount": 50000, "currency": "RUB", "state": "EXECUTED"},
+        {"date": "2023-01-05", "description": "Покупка", "account": "5678", "amount": 1000, "currency": "RUB", "state": "EXECUTED"},
+        {"date": "2023-01-10", "description": "Перевод", "account": "9012", "amount": 2000, "currency": "USD", "state": "PENDING"},
+    ]
 
-    @patch('builtins.input', side_effect=['1', 'EXECUTED', 'нет', 'нет', 'нет'])
-    def test_basic_flow(self, mock_input):
-      """Тест, проверяет базовый сценарий выполнения программы."""
-      with redirect_stdout(io.StringIO()) as captured_output:
-        main()
-        self.assertIn("Привет! Добро пожаловать в программу", captured_output.getvalue())
-        self.assertIn("Всего банковских операций в выборке:", captured_output.getvalue())
+# Тест для фильтрации транзакций по статусу
+def test_filter_by_state(mock_transactions, your_module=None):
+    from main import filter_by_state  # Замените your_module на имя вашего файла
+    filtered_transactions = filter_by_state(mock_transactions, "EXECUTED")
+    assert len(filtered_transactions) == 2
+    assert all(t["state"] == "EXECUTED" for t in filtered_transactions)
 
-    @patch('builtins.input', side_effect=['1', 'INVALID', 'EXECUTED', 'да', 'возрастанию', 'да', 'слово', 'да'])
-    def test_filter_by_all_options(self, mock_input):
-      """Проверка фильтрации по всем возможным параметрам."""
-      with redirect_stdout(io.StringIO()) as captured_output:
-          main()
-          output = captured_output.getvalue()
-          self.assertIn("Всего банковских операций в выборке:", output )
-          self.assertNotIn('USD', output)
+# Тест для сортировки транзакций по дате
+from main import sort_by_date  # Убедись, что импортируешь функцию правильно
 
-    @patch('builtins.input', side_effect=['1', 'EXECUTED', 'нет', 'нет', 'нет'])
-    def test_no_transactions_found(self, mock_input):
-        """Тест проверяет сценарий, когда не найдено ни одной транзакции."""
-        with patch('sys.stdout', new_callable=io.StringIO) as stdout:
-            main()
-            self.assertIn("Всего банковских операций в выборке: 4", stdout.getvalue())
+def test_sort_by_date_ascending(mock_transactions):
+    sorted_transactions = sort_by_date(mock_transactions, False)  # Сортировка по возрастанию
+    assert sorted_transactions[0]["date"] == "2023-01-01"
+    assert sorted_transactions[-1]["date"] == "2023-01-10"
 
-if __name__ == '__main__':
-    unittest.main()
+#тест для фильтрации транзакций по слову в описании
+def test_filter_bank_transaction(mock_transactions):
+    from main import filter_bank_transaction
+    filtered_transactions = filter_bank_transaction(mock_transactions, "зарплата")
+    assert len(filtered_transactions) == 1
+    assert filtered_transactions[0]["description"] == "Зарплата"

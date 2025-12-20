@@ -19,9 +19,3 @@ def get_date(date_string: str, date_format: str = "%Y-%m-%dT%H:%M:%S.%f") -> str
     except ValueError:
         print(f"Ошибка: Неверный формат даты '{date_string}' для формата '{date_format}'")
         return "Ошибка"
-
-
-# print() используется в данном коде только для вызова функции
-print(mask_account_card("Счет 73654108430135874305"))
-
-print(get_date("2024-03-11T02:26:18.671407"))

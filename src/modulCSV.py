@@ -13,7 +13,7 @@ def read_financial_data(filepath):
     """
     try:
         if filepath.endswith(".csv"):
-            df = pd.read_csv(filepath)  # Читаем CSV в DataFrame
+            df = pd.read_csv(filepath, sep=";")  # Читаем CSV в DataFrame
         elif filepath.endswith(".xlsx"):
             df = pd.read_excel(filepath)  # Читаем XLSX в DataFrame
         else:
@@ -33,21 +33,3 @@ def read_financial_data(filepath):
     except Exception as e:
         print(f"Произошла ошибка при чтении файла: {e}")
         return None
-
-
-# Пример использования
-file_csv = "../data/transactions.csv"
-file_xlsx = "../data/transactions_excel.xlsx"
-
-data_csv = read_financial_data(file_csv)
-data_xlsx = read_financial_data(file_xlsx)
-
-if data_csv is not None:
-    print("Данные из CSV:")
-    for transaction in data_csv[:5]:  # Вывод первых 5 транзакций
-        print(transaction)
-
-if data_xlsx is not None:
-    print("\nДанные из XLSX:")
-    for transaction in data_xlsx[:5]:  # Вывод первых 5 транзакций
-        print(transaction)

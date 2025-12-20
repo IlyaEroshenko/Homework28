@@ -64,17 +64,3 @@ def calculate_rub_amount(transaction):
     else:
         print(f"Неподдерживаемая валюта: {currency}")
         return None
-
-
-# Пример использования
-transaction1 = {"operationAmount": {"amount": 100, "currency": {"code": "USD"}}}
-transaction2 = {"operationAmount": {"amount": 5000, "currency": {"code": "RUB"}}}
-transaction3 = {"operationAmount": {"amount": 200, "currency": {"code": "CNY"}}}
-
-rub_amount1 = calculate_rub_amount(transaction1)
-rub_amount2 = calculate_rub_amount(transaction2)
-rub_amount3 = calculate_rub_amount(transaction3)
-
-print(f"Сумма в рублях (USD): {rub_amount1}")
-print(f"Сумма в рублях (RUB): {rub_amount2}")
-print(f"Сумма в рублях (некорректная транзакция): {rub_amount3}")
