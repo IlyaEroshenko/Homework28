@@ -1,15 +1,16 @@
 import os
 from datetime import datetime
+from locale import currency
 
 from src.open_file import read_financial_data_csv, read_financial_data_excel
 from src.process_banc import filter_bank_transaction
 from src.processing import filter_by_state, sort_by_date
 from src.utils import load_transactions_from_json
+from src.widget import get_date, mask_account_card
 
 base_dir = os.path.dirname(__file__)
 
-
-def main(filtered_transactions=None):
+def main(filtered_transactions=None, transaction=None, formatted_date=None, amount=None):
     print("Привет! Добро пожаловать в программу работы с банковскими транзакциями.")
     print("Выберите необходимый пункт меню:")
     print("1. Получить информацию о транзакциях из JSON-файла")
@@ -36,6 +37,7 @@ def main(filtered_transactions=None):
         transaction_data = read_financial_data_excel(base_dir + "/data/transactions_excel.xlsx")
 
     available_statuses = ["EXECUTED", "CANCELED", "PENDING"]
+
     while True:
         status = input(
             "Введите статус, по которому необходимо выполнить фильтрацию. Доступные для фильтровки статусы:"
@@ -57,7 +59,7 @@ def main(filtered_transactions=None):
     ruble_only = input("Выводить только рублевые транзакции? Да/Нет\n").lower() == "да"
 
     if ruble_only:
-        transaction_data = [t for t in transaction_data if t.get("currency") == "RUB"]
+        transaction_data = [t for t in transaction_data if t.get("currency", "") == "RUB"]
         print(transaction_data)
     filter_by_description = (
         input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет\n").lower() == "да"
@@ -78,12 +80,34 @@ def main(filtered_transactions=None):
         )
 
     for transaction in transaction_data:
-        # Здесь ты уже применил все нужные фильтры и сортировки
-        formatted_date = datetime.fromisoformat(transaction['date']).strftime("%d.%m.%Y")
+
         formatted_output = (
             f"{formatted_date} {transaction['description']}\n"
-            f"Счет {transaction['from']} -> Счет {transaction['to']}\n"
+            f"Счет {transaction.get('from', 'неизвестно')} -> Счет {transaction.get('to', 'неизвестно')}\n"
         )
+        print(formatted_output)
+
+    for transaction in transaction_data:
+        formatted_date = get_date(transaction['date'])
+        from_account_raw = transaction.get('from', 'неизвестно')
+        to_account_raw = transaction.get('to', 'неизвестно')
+        amount = transaction.get('amount', 'не указана сумма')
+        currency = transaction.get('currency_name', 'не указана валюта')
+
+        if from_account_raw:
+            from_account = mask_account_card(from_account_raw)
+        else:
+            from_account = ''  # или другое значение
+
+        if to_account_raw:
+            to_account = mask_account_card(to_account_raw)
+        else:
+            to_account = ''  # или другое значение
+
+        formatted_output = (
+            f"{formatted_date} {transaction['description']}\n"
+            f"{from_account} -> {to_account}\n"
+            f"Сумма: {int(transaction.get('amount', 'не указана сумма'))} {transaction.get('currency')}\n")
         print(formatted_output)
 
 

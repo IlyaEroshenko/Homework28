@@ -18,7 +18,8 @@ def filter_by_state(data: list, state: str = "EXECUTED") -> list:
 
     # Перебераем все данные
     for item in data:
-        if item.get("state", "").upper() == state.upper():
+        state_value = item.get("state", "")
+        if isinstance(state_value, str) and state_value.upper() == state.upper():
             filtered_data.append(item)
 
     return filtered_data
@@ -38,3 +39,12 @@ def sort_by_date(transactions_list: list[dict], descending: bool = True) -> list
 
     # преобразуем строку даты в объект datetime
     return sorted(transactions_list, key=lambda x: datetime.fromisoformat(x["date"]), reverse=descending)
+
+
+def filter_bank_transaction(transactions, search_term):
+    search_term = search_term.lower()
+    result = []
+    for transaction in transactions:
+        if search_term in transaction['description'].lower():
+            result.append(transaction)
+    return result
