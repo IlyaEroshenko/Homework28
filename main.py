@@ -83,7 +83,7 @@ def main(filtered_transactions=None, transaction=None, formatted_date=None, amou
 
         formatted_output = (
             f"{formatted_date} {transaction['description']}\n"
-            f"Счет {transaction.get('from', 'неизвестно')} -> Счет {transaction.get('to', 'неизвестно')}\n"
+            f"{transaction.get('from', 'неизвестно')} -> {transaction.get('to', 'неизвестно')}\n"
         )
         print(formatted_output)
 
@@ -107,7 +107,7 @@ def main(filtered_transactions=None, transaction=None, formatted_date=None, amou
         formatted_output = (
             f"{formatted_date} {transaction['description']}\n"
             f"{from_account} -> {to_account}\n"
-            f"Сумма: {int(transaction.get('amount', 'не указана сумма'))} {transaction.get('currency')}\n")
+            f"Сумма: {(transaction.get('amount', 'не указана сумма'))} {transaction.get('currency')}\n")
         print(formatted_output)
 
 

@@ -26,19 +26,26 @@ def filter_by_state(data: list, state: str = "EXECUTED") -> list:
 
 
 def sort_by_date(transactions_list: list[dict], descending: bool = True) -> list[dict]:
-    """ "
+    """
     Сортирует список словарей по ключу "date".
 
     Args:
-        list_of_dicts (list[dict]): Список словарей для сортировки.
+        transactions_list (list[dict]): Список словарей для сортировки.
         descending (bool, optional): Порядок сортировки. Если True, сортировка будет по убыванию. По умолчанию True.
 
     Returns:
         list[dict]: Новый список, отсортированный по дате.
     """
 
-    # преобразуем строку даты в объект datetime
-    return sorted(transactions_list, key=lambda x: datetime.fromisoformat(x["date"]), reverse=descending)
+    def get_date_or_none(transaction):
+        try:
+            return datetime.fromisoformat(transaction["date"])
+        except ValueError as e:
+            print(f"Ошибка формата даты в: {transaction['date']}", e)
+            return None
+
+    # Сортируем, игнорируя элементы с некорректной датой
+    return sorted(transactions_list, key=get_date_or_none, reverse=descending)
 
 
 def filter_bank_transaction(transactions, search_term):
