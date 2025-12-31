@@ -1,17 +1,39 @@
-def get_mask_card_number(card_number: str) -> str:
+import logging
+import os
+
+print("Текущая рабочая директория:", os.getcwd())
+
+logger = logging.getLogger("masks")
+logger.setLevel(logging.DEBUG)
+file_handler = logging.FileHandler(r"C:\Users\ilyer\OneDrive\Homework\logs\masks.log", "w", encoding="utf-8")
+file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
+
+
+def get_mask_card_number(number_card: str) -> str:
     """Функция принимает на вход номер и название карты и возвращаем маску номера."""
-    parts = card_number.split()  # Делим входящюю информацию на части
-    name_card = " ".join(parts[:-1])
-    number_card = parts[-1]
-    if len(number_card) == 16:  # Проверяем количество цифр в номере
-        return f"{name_card} {number_card[:4]} {number_card[4:6]}** **** {number_card[12:]}"
+    logger.info(f"Начало маскировки номера карты: {number_card}")
+
+    if len(number_card) == 16 and number_card.isdigit():  # Проверяем количество цифр в номере
+        masked_number = f"{number_card[:4]} {number_card[4:6]}** **** {number_card[12:]}"
+        logger.info(f"Номер карты успешно замаскирован. Результат: {masked_number}")
+        return masked_number
     else:
+        logger.warning(f"Некорректный номер карты: {number_card}")
         return "Некорректный номер карты"
 
 
 def get_mask_account(account_number: str) -> str:
     """Функция принимает на вход номер счета и возвращает его маску."""
-    return f"{'Счёт '}**{account_number[-4:]}"
+    if len(account_number) >= 6 and account_number.isdigit():
+        logger.info(f"Начало маскировки номера счета: {account_number}")
+        masked_account = f"{''}**{account_number[-4:]}"
+        logger.info(f"Номер счета успешно замаскирован. Результат: {masked_account}")
+        return masked_account
+    else:
+        logger.warning(f"Некорректный номер счёта: {account_number}")
+        return "Некорректный номер счёта"
 
 
 # print() используется в данном коде только для вызова функции, при дальнейшей работе он будет удалён.
