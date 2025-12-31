@@ -58,12 +58,21 @@ def main(filtered_transactions=None, transaction=None, formatted_date=None, amou
 
     ruble_only = input("Выводить только рублевые транзакции? Да/Нет\n").lower() == "да"
 
-    if ruble_only:
-        transaction_data = [t for t in transaction_data if t.get("currency", "") == "RUB"]
-        print(transaction_data)
+    if ruble_only == "да":
+        transaction_data = [
+            t for t in transaction_data
+            if (
+                    t.get("currency_code") == "RUB" or
+                    (t.get("operationAmount") and
+                     t["operationAmount"].get("currency") and
+                     t["operationAmount"]["currency"].get("code") == "RUB")
+            )
+        ]
+
     filter_by_description = (
-        input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет\n").lower() == "да"
+        input("Отфильтровать список по определённому слову в описание? Да/Нет\n").lower() == "Да"
     )
+
     # Запрашиваем строку для фильтрации, если выбрана фильтрация по описанию
     if filter_by_description:
         search_term = input("Введите строку для поиска в описаниях транзакций: ").lower()
@@ -91,8 +100,12 @@ def main(filtered_transactions=None, transaction=None, formatted_date=None, amou
         formatted_date = get_date(transaction['date'])
         from_account_raw = transaction.get('from', 'неизвестно')
         to_account_raw = transaction.get('to', 'неизвестно')
-        amount = transaction.get('amount', 'не указана сумма')
-        currency = transaction.get('currency_name', 'не указана валюта')
+        amount = transaction["amount"] if "amount" in transaction else transaction["operationAmount"]["amount"]
+        currency = (
+            transaction["currency_code"]
+            if "currency_code" in transaction
+            else transaction["operationAmount"]["currency"]["code"]
+        )
 
         if from_account_raw:
             from_account = mask_account_card(from_account_raw)
@@ -107,7 +120,7 @@ def main(filtered_transactions=None, transaction=None, formatted_date=None, amou
         formatted_output = (
             f"{formatted_date} {transaction['description']}\n"
             f"{from_account} -> {to_account}\n"
-            f"Сумма: {(transaction.get('amount', 'не указана сумма'))} {transaction.get('currency')}\n")
+            f"Сумма: {amount} {currency}\n")
         print(formatted_output)
 
 

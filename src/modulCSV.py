@@ -13,7 +13,7 @@ def read_financial_data(filepath):
     """
     try:
         if filepath.endswith(".csv"):
-            df = pd.read_csv(filepath, sep=";")  # Читаем CSV в DataFrame
+            df = pd.read_csv(filepath, encoding="utf-8", sep=";")  # Читаем CSV в DataFrame
         elif filepath.endswith(".xlsx"):
             df = pd.read_excel(filepath)  # Читаем XLSX в DataFrame
         else:

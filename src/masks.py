@@ -11,18 +11,16 @@ file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 
 
-def get_mask_card_number(card_number: str) -> str:
+def get_mask_card_number(number_card: str) -> str:
     """Функция принимает на вход номер и название карты и возвращаем маску номера."""
-    logger.info(f"Начало маскировки номера карты: {card_number}")
-    parts = card_number.split()  # Делим входящюю информацию на части
-    name_card = " ".join(parts[:-1])
-    number_card = parts[-1]
+    logger.info(f"Начало маскировки номера карты: {number_card}")
+
     if len(number_card) == 16 and number_card.isdigit():  # Проверяем количество цифр в номере
-        masked_number = f"{name_card} {number_card[:4]} {number_card[4:6]}** **** {number_card[12:]}"
+        masked_number = f"{number_card[:4]} {number_card[4:6]}** **** {number_card[12:]}"
         logger.info(f"Номер карты успешно замаскирован. Результат: {masked_number}")
         return masked_number
     else:
-        logger.warning(f"Некорректный номер карты: {card_number}")
+        logger.warning(f"Некорректный номер карты: {number_card}")
         return "Некорректный номер карты"
 
 
@@ -30,7 +28,7 @@ def get_mask_account(account_number: str) -> str:
     """Функция принимает на вход номер счета и возвращает его маску."""
     if len(account_number) >= 6 and account_number.isdigit():
         logger.info(f"Начало маскировки номера счета: {account_number}")
-        masked_account = f"{'Счёт '}**{account_number[-4:]}"
+        masked_account = f"{''}**{account_number[-4:]}"
         logger.info(f"Номер счета успешно замаскирован. Результат: {masked_account}")
         return masked_account
     else:
